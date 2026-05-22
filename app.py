@@ -5,7 +5,7 @@ from database import init_db
 import os
 
 app = Flask(__name__)
-app.secret_key = os.environ.get('SECRET_KEY', 'dev-secret-key-123')
+app.secret_key = os.environ.get('SECRET_KEY')
 
 # Configuration
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(app.root_path, 'instance', 'expenses.db')
