@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% block title %}Expense Tracker - Simple Money Tracking{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero">
+    <div class="hero-text">
+        <span class="hero-badge">Effortless Tracking</span>
+        <h1 class="hero-title">Manage who you <em>owe</em> and who owes <em>you</em>.</h1>
+        <p class="hero-subtitle">Stop stressing over fragmented notes and mental math. Track every lend and borrow with a clean, modern interface designed for clarity.</p>
+        <div class="hero-actions">
+            <a href="{{ url_for('register') }}" class="btn-primary">Get Started Free</a>
+            <a href="{{ url_for('login') }}" class="btn-ghost">Login to Account</a>
+        </div>
+    </div>
+    <div class="hero-visual">
+        <div class="mock-card">
+            <div class="mock-card-header">
+                <span class="mock-label">Current Balance</span>
+                <span class="mock-total">$1,240.00</span>
+            </div>
+            <div class="mock-bars">
+                <div class="mock-bar-row">
+                    <span class="mock-cat">To Pay</span>
+                    <div class="mock-bar-track"><div class="mock-bar" style="width: 40%;"></div></div>
+                    <span class="mock-amt">$496</span>
+                </div>
+                <div class="mock-bar-row">
+                    <span class="mock-cat">To Take</span>
+                    <div class="mock-bar-track"><div class="mock-bar mock-bar-2" style="width: 60%;"></div></div>
+                    <span class="mock-amt">$744</span>
+                </div>
+                <div class="mock-bar-row">
+                    <span class="mock-cat">Others</span>
+                    <div class="mock-bar-track"><div class="mock-bar mock-bar-3" style="width: 30%;"></div></div>
+                    <span class="mock-amt">$372</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="features">
+    <div class="features-inner">
+        <div class="feature-card">
+            <div class="feature-icon">✓</div>
+            <h3 class="feature-title">Simple Tracking</h3>
+            <p class="feature-body">Add and remove entries in seconds. No complex accounting software, just a simple list of people and amounts.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">⇄</div>
+            <h3 class="feature-title">Dual Modes</h3>
+            <p class="feature-body">Easily toggle between "To Pay" (your debts) and "Take From" (your credits) to keep your finances organized.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">🔒</div>
+            <h3 class="feature-title">Secure Access</h3>
+            <p class="feature-body">Your data is private. We use industry-standard password hashing to ensure your financial records stay yours.</p>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="cta-section">
+    <div class="cta-inner">
+        <h2 class="cta-title">Ready to clear the confusion?</h2>
+        <p class="cta-body">Join hundreds of users who have simplified their personal lending and borrowing.</p>
+        <a href="{{ url_for('register') }}" class="btn-primary" style="padding: 0.8rem 2.5rem; font-size: 1rem;">Create Your Free Account</a>
+    </div>
+</section>
+{% endblock %}
