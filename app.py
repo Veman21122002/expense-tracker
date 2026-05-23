@@ -92,10 +92,15 @@ def dashboard():
                            total_to_pay=total_to_pay,
                            total_take_from=total_take_from)
 
-@app.route('/add_expense', methods=['POST'])
+@app.route('/add_expense', methods=['GET', 'POST'])
 def add_expense():
     if 'user_id' not in session:
         return redirect(url_for('login'))
+
+    if request.method == 'GET':
+        import datetime
+        today = datetime.date.today().isoformat()
+        return render_template('add_expense.html', today=today)
 
     try:
         person_name = request.form.get('person_name')

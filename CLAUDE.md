@@ -20,6 +20,8 @@ The application is a full-stack expense tracker built with Flask and SQLite.
 
 ### Frontend
 - `templates/`: Jinja2 templates using a base layout (`base.html`) for consistency.
+    - `dashboard.html`: View expenses using a tabbed interface.
+    - `add_expense.html`: Dedicated page for creating new expense entries.
 - `static/css/style.css`: Core styling, utilizing a custom set of CSS variables for theme management.
 - `static/js/main.js`: Basic client-side interactions.
 
@@ -28,5 +30,6 @@ The application is a full-stack expense tracker built with Flask and SQLite.
 
 ## Key Implementation Details
 - **Authentication**: Implemented using Flask sessions and `werkzeug.security` for password hashing.
-- **Expense Logic**: The dashboard uses a tabbed interface to separate money owed to others from money owed by others.
+- **Expense Logic**: Expenses are categorized into two types: "To Pay" (money the user owes) and "Take From" (money owed to the user). These are
+managed via separate routes for viewing (dashboard) and creation (`/add_expense`).
 - **Styling**: Uses a modern, card-based responsive design with specific breakpoints for mobile and desktop.
