@@ -22,7 +22,7 @@
         <form action="{{ url_for('add_expense') }}" method="POST" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
             <div class="form-group">
                 <label>Person Name</label>
-                <input type="text" name="person_name" class="form-input" placeholder="e.g. John Doe" required>
+                <input type="text" name="person_name" class="form-input" placeholder="e.g. Rahul " required>
             </div>
             <div class="form-group">
                 <label>Amount</label>
@@ -30,7 +30,7 @@
             </div>
             <div class="form-group">
                 <label>Category</label>
-                <select name="category" class="form-input" required>
+                <select name="category" id="category-select" class="form-input" required>
                     <option value="to_pay">To Pay (I owe)</option>
                     <option value="take_from">Take From (Owed to me)</option>
                 </select>
@@ -53,14 +53,14 @@
     <div id="tab-to-pay" class="tab-content">
         <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 1.5rem;">
             <h2 class="feature-title" style="font-size: 1.5rem; margin: 0;">People I Owe (To Pay)</h2>
-            <div class="mock-total" style="font-size: 1.5rem;">Total: <span style="color: var(--danger);">${{ "%.2f"|format(total_to_pay) }}</span></div>
+            <div class="mock-total" style="font-size: 1.5rem;">Total: <span style="color: var(--danger);">₹{{ "%.2f"|format(total_to_pay) }}</span></div>
         </div>
         <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem;">
             {% for expense in to_pay %}
             <div class="mock-card" style="display: flex; justify-content: space-between; align-items: center;">
                 <div>
                     <div style="font-family: var(--font-display); font-size: 1.2rem; color: var(--ink);">
-                        <span style="color: var(--danger); font-weight: 700; margin-right: 0.75rem;">${{ "%.2f"|format(expense.amount) }}</span>
+                        <span style="color: var(--danger); font-weight: 700; margin-right: 0.75rem;">₹{{ "%.2f"|format(expense.amount) }}</span>
                         {{ expense.person_name }}
                     </div>
                     <div style="font-size: 0.85rem; color: var(--ink-muted); margin-top: 0.25rem;">
@@ -78,14 +78,14 @@
     <div id="tab-take-from" class="tab-content" style="display: none;">
         <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 1.5rem;">
             <h2 class="feature-title" style="font-size: 1.5rem; margin: 0;">People Who Owe Me (Take From)</h2>
-            <div class="mock-total" style="font-size: 1.5rem;">Total: <span style="color: var(--accent);">${{ "%.2f"|format(total_take_from) }}</span></div>
+            <div class="mock-total" style="font-size: 1.5rem;">Total: <span style="color: var(--accent);">₹{{ "%.2f"|format(total_take_from) }}</span></div>
         </div>
         <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem;">
             {% for expense in take_from %}
             <div class="mock-card" style="display: flex; justify-content: space-between; align-items: center;">
                 <div>
                     <div style="font-family: var(--font-display); font-size: 1.2rem; color: var(--ink);">
-                        <span style="color: var(--accent); font-weight: 700; margin-right: 0.75rem;">${{ "%.2f"|format(expense.amount) }}</span>
+                        <span style="color: var(--accent); font-weight: 700; margin-right: 0.75rem;">₹{{ "%.2f"|format(expense.amount) }}</span>
                         {{ expense.person_name }}
                     </div>
                     <div style="font-size: 0.85rem; color: var(--ink-muted); margin-top: 0.25rem;">
@@ -105,6 +105,11 @@
 function switchTab(tab) {
     document.querySelectorAll('.tab-content').forEach(el => el.style.display = 'none');
     document.getElementById('tab-' + tab).style.display = 'block';
+
+    const categorySelect = document.getElementById('category-select');
+    if (categorySelect) {
+        categorySelect.value = tab.replace('-', '_');
+    }
 
     const btnToPay = document.getElementById('btn-to-pay');
     const btnTakeFrom = document.getElementById('btn-take-from');
