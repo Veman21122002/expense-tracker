@@ -5,8 +5,11 @@
 <div style="max-width: var(--max-width); margin: 3rem auto; padding: 0 2rem;">
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
         <h1 class="hero-title" style="font-size: 2rem; margin: 0;">My Dashboard</h1>
-        <div style="font-family: var(--font-display); font-size: 1.2rem; color: var(--ink-muted);">
-            Welcome, <span style="color: var(--ink); font-weight: 600;">{{ session.username }}</span>
+        <div style="display: flex; align-items: center; gap: 1.5rem;">
+            <div style="font-family: var(--font-display); font-size: 1.2rem; color: var(--ink-muted);">
+                Welcome, <span style="color: var(--ink); font-weight: 600;">{{ session.username }}</span>
+            </div>
+            <a href="{{ url_for('add_expense') }}" class="btn-primary" style="padding: 0.6rem 1.5rem; text-decoration: none; font-size: 0.9rem;">+ Add New Entry</a>
         </div>
     </div>
 
@@ -14,39 +17,6 @@
     <div style="display: flex; gap: 1rem; margin-bottom: 2rem; border-bottom: 1px solid var(--border);">
         <button id="btn-to-pay" class="btn-ghost" style="border-bottom: 3px solid var(--accent); color: var(--ink); font-weight: 600; padding: 0.6rem 2rem; cursor: pointer;" onclick="switchTab('to-pay')">To Pay</button>
         <button id="btn-take-from" class="btn-ghost" style="border-bottom: 1px solid transparent; color: var(--ink-muted); padding: 0.6rem 2rem; cursor: pointer;" onclick="switchTab('take-from')">Take From</button>
-    </div>
-
-    <!-- Add Expense Form -->
-    <div class="auth-card" style="margin-bottom: 3rem; max-width: 600px;">
-        <h3 style="font-family: var(--font-display); margin-bottom: 1.5rem; color: var(--ink);">Add New Entry</h3>
-        <form action="{{ url_for('add_expense') }}" method="POST" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
-            <div class="form-group">
-                <label>Person Name</label>
-                <input type="text" name="person_name" class="form-input" placeholder="e.g. Rahul " required>
-            </div>
-            <div class="form-group">
-                <label>Amount</label>
-                <input type="number" step="0.01" name="amount" class="form-input" placeholder="0.00" required>
-            </div>
-            <div class="form-group">
-                <label>Category</label>
-                <select name="category" id="category-select" class="form-input" required>
-                    <option value="to_pay">To Pay (I owe)</option>
-                    <option value="take_from">Take From (Owed to me)</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label>Date</label>
-                <input type="date" name="date" class="form-input" required value="{{ today }}">
-            </div>
-            <div class="form-group" style="grid-column: span 2;">
-                <label>Description (Optional)</label>
-                <input type="text" name="description" class="form-input" placeholder="Lunch, Loan, etc.">
-            </div>
-            <div style="grid-column: span 2; text-align: right;">
-                <button type="submit" class="btn-primary" style="padding: 0.6rem 2.5rem;">Add Expense</button>
-            </div>
-        </form>
     </div>
 
     <!-- Expenses Lists -->
@@ -105,11 +75,6 @@
 function switchTab(tab) {
     document.querySelectorAll('.tab-content').forEach(el => el.style.display = 'none');
     document.getElementById('tab-' + tab).style.display = 'block';
-
-    const categorySelect = document.getElementById('category-select');
-    if (categorySelect) {
-        categorySelect.value = tab.replace('-', '_');
-    }
 
     const btnToPay = document.getElementById('btn-to-pay');
     const btnTakeFrom = document.getElementById('btn-take-from');
