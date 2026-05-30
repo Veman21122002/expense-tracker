@@ -8,13 +8,16 @@
 
     <div class="people-grid">
         {% for person in people %}
-        <a href="{{ url_for('person_details', name=person) }}" class="person-card">
+        <div class="person-card">
             <div class="person-info">
-                <h3>{{ person }}</h3>
+                <h3 style="margin: 0 0 5px 0;"><a href="{{ url_for('person_details', name=person) }}" style="text-decoration: none; color: inherit;">{{ person }}</a></h3>
                 <p>View balance and history</p>
+            </div]
+            <div style="display: flex; gap: 10px; align-items: center;">
+                <a href="{{ url_for('add_expense', person_name=person) }}" class="btn-ghost" style="padding: 0.4rem 0.8rem; font-size: 0.8rem; text-decoration: none; color: var(--ink); border-color: var(--border);">+ Add</a>
+                <a href="{{ url_for('person_details', name=person) }}" class="arrow" style="text-decoration: none; color: #ccc;">&rarr;</a>
             </div>
-            <div class="arrow">&rarr;</div>
-        </a>
+        </div>
         {% else %}
         <p class="no-data">No people found. Add some expenses first!</p>
         {% endfor %}

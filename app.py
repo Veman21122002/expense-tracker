@@ -124,7 +124,8 @@ def add_expense():
     if request.method == 'GET':
         import datetime
         today = datetime.date.today().isoformat()
-        return render_template('add_expense.html', today=today)
+        person_name = request.args.get('person_name', '')
+        return render_template('add_expense.html', today=today, person_name=person_name)
 
     try:
         person_name = request.form.get('person_name')
@@ -150,6 +151,53 @@ def add_expense():
         flash('Expense added successfully!', 'success')
     except (ValueError, TypeError):
         flash('Invalid amount entered', 'error')
+
+    return redirect(url_for('dashboard'))
+
+@app.route('/edit_expense/<int:expense_id>', methods=['GET', 'POST'])
+def edit_expense(expense_id):
+    if 'user_id' not in session:
+        return redirect(url_for('login'))
+
+    expense = Expense.query.get(expense_id)
+    if not expense or expense.user_id != session['user_id']:
+        flash('Expense not found or unauthorized', 'error')
+        return redirect(url_for('dashboard'))
+
+    if request.method == 'POST':
+        try:
+            expense.person_name = request.form.get('person_name')
+            expense.amount = float(request.form.get('amount'))
+            expense.category = request.form.get('category')
+            expense.description = request.form.get('description', '')
+            expense.date = request.form.get('date')
+
+            if not expense.person_name or not expense.amount or not expense.category or not expense.date:
+                flash('Please fill in all required fields', 'error')
+                return redirect(url_for('edit_expense', expense_id=expense_id))
+
+            db.session.commit()
+            flash('Expense updated successfully!', 'success')
+            return redirect(url_for('dashboard'))
+        except (ValueError, TypeError):
+            flash('Invalid amount entered', 'error')
+
+    import datetime
+    today = datetime.date.today().isoformat()
+    return render_template('edit_expense.html', expense=expense, today=today)
+
+@app.route('/settle_all')
+def settle_all():
+    if 'user_id' not in session:
+        return redirect(url_for('login'))
+
+    user_id = session['user_id']
+    try:
+        Expense.query.filter_by(user_id=user_id).delete()
+        db.session.commit()
+        flash('All expenses have been settled!', 'success')
+    except Exception as e:
+        flash('An error occurred while settling all expenses', 'error')
 
     return redirect(url_for('dashboard'))
 
