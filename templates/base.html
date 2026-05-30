@@ -20,6 +20,7 @@
                 {% if session.get('user_id') %}
                     <a href="{{ url_for('index') }}" class="nav-home">Home</a>
                     <a href="{{ url_for('dashboard') }}">Dashboard</a>
+                    <a href="{{ url_for('people') }}">People</a>
                     <a href="{{ url_for('logout') }}" class="nav-cta">Logout</a>
                 {% else %}
                     <a href="{{ url_for('index') }}" class="nav-home">Home</a>

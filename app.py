@@ -72,6 +72,30 @@ def logout():
     flash('You have been logged out', 'success')
     return redirect(url_for('login'))
 
+@app.route('/people')
+def people():
+    if 'user_id' not in session:
+        return redirect(url_for('login'))
+
+    user_id = session['user_id']
+    # Get unique person names for this user
+    people_results = db.session.query(Expense.person_name).filter_by(user_id=user_id).distinct().all()
+    people = [p[0] for p in people_results]
+
+    return render_template('people.html', people=people)
+
+@app.route('/person/<name>')
+def person_details(name):
+    if 'user_id' not in session:
+        return redirect(url_for('login'))
+
+    user_id = session['user_id']
+    expenses = Expense.query.filter_by(user_id=user_id, person_name=name).all()
+
+    net_amount = sum(e.amount if e.category == 'take_from' else -e.amount for e in expenses)
+
+    return render_template('person_details.html', name=name, expenses=expenses, net_amount=net_amount)
+
 @app.route('/dashboard')
 def dashboard():
     if 'user_id' not in session:

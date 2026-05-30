@@ -20,10 +20,16 @@
             </div>
             <div class="form-group">
                 <label>Category</label>
-                <select name="category" class="form-input" required>
-                    <option value="to_pay">To Pay (I owe)</option>
-                    <option value="take_from">Take From (Owed to me)</option>
-                </select>
+                <div class="category-toggle">
+                    <input type="radio" name="category_toggle" id="toggle_pay" value="to_pay" checked>
+                    <label for="toggle_pay" class="toggle-option">To Pay</label>
+
+                    <input type="radio" name="category_toggle" id="toggle_take" value="take_from">
+                    <label for="toggle_take" class="toggle-option">Take From</label>
+
+                    <div class="toggle-slider"></div>
+                </div>
+                <input type="hidden" name="category" id="category_input" value="to_pay">
             </div>
             <div class="form-group">
                 <label>Date</label>
@@ -34,9 +40,76 @@
                 <input type="text" name="description" class="form-input" placeholder="Lunch, Loan, etc.">
             </div>
             <div style="grid-column: span 2; text-align: right;">
-                <button type="submit" class="btn-primary" style="padding: 0.6rem 2.5rem;">Add Expense</button>
+                <button type="submit" id="submit-btn" class="btn-primary" style="padding: 0.6rem 2.5rem;">Add Expense</button>
             </div>
         </form>
     </div>
 </div>
+
+<style>
+.category-toggle {
+    display: flex;
+    position: relative;
+    background: #eee;
+    border-radius: 8px;
+    padding: 4px;
+    user-select: none;
+}
+.category-toggle input {
+    display: none;
+}
+.toggle-option {
+    flex: 1;
+    text-align: center;
+    padding: 8px 0;
+    cursor: pointer;
+    z-index: 2;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: color 0.2s;
+    color: #666;
+}
+.category-toggle input:checked + .toggle-option {
+    color: white;
+}
+.toggle-slider {
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    width: calc(50% - 4px);
+    height: calc(100% - 8px);
+    background: var(--primary-color, #333);
+    border-radius: 6px;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 1;
+}
+#toggle_take:checked ~ .toggle-slider {
+    transform: translateX(100%);
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const payRadio = document.getElementById('toggle_pay');
+    const takeRadio = document.getElementById('toggle_take');
+    const categoryInput = document.getElementById('category_input');
+    const submitBtn = document.getElementById('submit-btn');
+
+    function updateCategory() {
+        if (payRadio.checked) {
+            categoryInput.value = 'to_pay';
+            submitBtn.textContent = 'Add Debt';
+        } else {
+            categoryInput.value = 'take_from';
+            submitBtn.textContent = 'Add Credit';
+        }
+    }
+
+    payRadio.addEventListener('change', updateCategory);
+    takeRadio.addEventListener('change', updateCategory);
+
+    // Init
+    updateCategory();
+});
+</script>
 {% endblock %}
